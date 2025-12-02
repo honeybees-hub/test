@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fancy Text Universe (2000+ Styles)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Added html2canvas for screenshot generation -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gray: { 850: '#1f2937', 900: '#111827', 950: '#0b0f19' },
+                        primary: { 400: '#c084fc', 500: '#a855f7', 600: '#9333ea' }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out',
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                        'spin-slow': 'spin 3s linear infinite'
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        pulseGlow: { '0%, 100%': { boxShadow: '0 0 15px rgba(168, 85, 247, 0.2)' }, '50%': { boxShadow: '0 0 25px rgba(168, 85, 247, 0.5)' } }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0b0f19; }
+        ::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+        
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .glass-panel:hover {
+            border-color: rgba(168, 85, 247, 0.3);
+            background: rgba(31, 41, 55, 0.8);
+        }
+
+        .ai-btn {
+            position: relative; overflow: hidden; transition: all 0.2s ease;
+            background: rgba(31, 41, 55, 0.5);
+            border: 1px solid rgba(75, 85, 99, 0.4);
+        }
+        .ai-btn:hover { transform: translateY(-2px); background: rgba(55, 65, 81, 0.8); }
+        .ai-btn:active { transform: translateY(0); }
+        
+        /* Custom Gradient Text */
+        .gradient-text {
+            background: linear-gradient(to right, #c084fc, #ec4899, #ef4444);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-[#050505] text-white min-h-screen font-sans selection:bg-purple-500 selection:text-white">
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 border border-green-500/30 text-green-400 px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 transition-all duration-300 opacity-0 translate-y-10 z-50 pointer-events-none backdrop-blur-md">
+        <i class="fas fa-check-circle text-xl"></i>
+        <span class="font-semibold" id="toastMsg">Copied!</span>
+    </div>
+
+    <!-- Screenshot Capture Template (Hidden) -->
+    <!-- This is the layout that gets converted to an image -->
+    <div id="share-capture-area" class="fixed top-0 left-[-9999px] w-[600px] bg-[#0b0f19] p-8 flex flex-col gap-6 items-center justify-center border-2 border-purple-500/30">
+        <!-- Header Branding -->
+        <div class="text-center w-full border-b border-gray-800 pb-4">
+            <h2 class="text-3xl font-black gradient-text tracking-tight">Text Universe</h2>
+            <p class="text-gray-400 text-sm mt-1 uppercase tracking-widest">Premium Text Generator</p>
+        </div>
+        
+        <!-- The Fancy Text Content -->
+        <div id="share-content" class="text-4xl leading-normal font-medium text-center p-8 bg-gray-900/50 rounded-2xl w-full break-words border border-gray-700 text-white min-h-[150px] flex items-center justify-center shadow-2xl shadow-purple-900/20">
+            <!-- Content injected here -->
+        </div>
+    </div>
+
+    <div class="max-w-[1600px] mx-auto px-4 py-8">
+        
+        <!-- Header -->
+        <header class="text-center mb-10 animate-fade-in">
+            <div class="inline-block relative mb-2">
+                <i class="fas fa-star text-yellow-400 absolute -top-4 -right-6 text-xl animate-bounce"></i>
+                <h1 class="text-5xl md:text-7xl font-black tracking-tight gradient-text pb-2">
+                    Text Universe
+                </h1>
+            </div>
+            <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                2000+ Styles • Emoji Mixers • 
+            </p>
+        </header>
+
+
+
+        <!-- Input Area -->
+        <div class="sticky top-4 z-40 mb-8 animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="glass-panel rounded-2xl p-1 shadow-[0_0_50px_-12px_rgba(168,85,247,0.25)] relative group">
+                
+                <!-- AI Loader -->
+                <div id="aiLoader" class="absolute inset-0 z-50 bg-gray-900/90 backdrop-blur-sm rounded-2xl flex flex-col items-center justify-center hidden">
+                    <div class="w-16 h-16 relative">
+                        <div class="absolute inset-0 rounded-full border-t-2 border-purple-500 animate-spin"></div>
+                        <div class="absolute inset-2 rounded-full border-r-2 border-pink-500 animate-spin-slow"></div>
+                    </div>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 font-bold mt-4 animate-pulse text-lg">Processing...</span>
+                </div>
+
+                <div class="relative">
+                    <textarea 
+                        id="textInput" 
+                        placeholder="Type anything here..." 
+                        class="w-full bg-[#0f1115] text-gray-100 rounded-xl p-5 text-xl md:text-2xl outline-none border border-gray-800 focus:border-purple-500/50 focus:bg-gray-900 transition-all resize-none h-36 placeholder-gray-600 font-medium"
+                        spellcheck="false"
+                    ></textarea>
+                    <div class="absolute bottom-4 right-4 flex items-center gap-3 text-xs font-mono text-gray-500">
+                        <button onclick="clearText()" class="hover:text-red-400 transition-colors">CLEAR</button>
+                        <span>|</span>
+                        <span id="charCount">0</span> chars
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap gap-2 mb-6 justify-center animate-fade-in" style="animation-delay: 0.15s;">
+            <button onclick="filterStyles('all')" class="filter-btn active px-4 py-1.5 rounded-full bg-gray-800 text-gray-400 text-sm border border-transparent hover:border-purple-500/30 hover:text-white transition-all" data-filter="all">All Styles</button>
+            <button onclick="filterStyles('emoji')" class="filter-btn px-4 py-1.5 rounded-full bg-gray-800 text-gray-400 text-sm border border-transparent hover:border-purple-500/30 hover:text-white transition-all" data-filter="emoji">😊 Emoji Mix</button>
+            <button onclick="filterStyles('clean')" class="filter-btn px-4 py-1.5 rounded-full bg-gray-800 text-gray-400 text-sm border border-transparent hover:border-purple-500/30 hover:text-white transition-all" data-filter="clean">✨ Clean</button>
+            <button onclick="filterStyles('glitch')" class="filter-btn px-4 py-1.5 rounded-full bg-gray-800 text-gray-400 text-sm border border-transparent hover:border-purple-500/30 hover:text-white transition-all" data-filter="glitch">🕸️ Glitch</button>
+            <button onclick="filterStyles('aesthetic')" class="filter-btn px-4 py-1.5 rounded-full bg-gray-800 text-gray-400 text-sm border border-transparent hover:border-purple-500/30 hover:text-white transition-all" data-filter="aesthetic">🌸 Aesthetic</button>
+        </div>
+
+        <!-- Results Grid -->
+        <div id="outputGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 animate-fade-in pb-20" style="animation-delay: 0.2s;">
+            <!-- Content injected here -->
+        </div>
+
+        <!-- Load More Trigger -->
+        <div id="loadMoreTrigger" class="h-20 flex items-center justify-center text-gray-500">
+            <span class="hidden" id="loadingMoreText">Loading more styles...</span>
+        </div>
+
+    </div>
+
+    <script>
+        const apiKey = "AIzaSyC2M1CNzAvMqpOpN88xXap7GDfDJcqA0dg"; // Provided by runtime
+        
+        // --- 1. CORE DATA ---
+        const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        // Base Fonts (40+)
+        const baseFonts = [
+            { name: "Normal", map: chars },
+            { name: "Bold Serif", map: "𝐚𝐛𝐜𝐝𝐞𝐟𝐠𝐡𝐢𝐣𝐤𝐥𝐦𝐧𝐨𝐩𝐪𝐫𝐬𝐭𝐮𝐯𝐰𝐱𝐲𝐳𝐀𝐁𝐂𝐃𝐄𝐅𝐆𝐇𝐈𝐉𝐊𝐋𝐌𝐍𝐎𝐏𝐐𝐑𝐒𝐓𝐔𝐕𝐖𝐗𝐘𝐙𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗" },
+            { name: "Bold Sans", map: "𝗮𝗯𝗰𝗱𝗲𝗳𝗴𝗵𝗶𝗷𝗸𝗹𝗺𝗻𝗼𝗽𝗾𝗿𝘀𝘁𝘂𝘃𝘄𝘅𝘆𝘇𝗔𝗕𝗖𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝗟𝗠𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭𝟬𝟭𝟮𝟯𝟰𝟱𝟲𝟳𝟴𝟵" },
+            { name: "Italic Serif", map: "𝑎𝑏𝑐𝑑𝑒𝑓𝑔ℎ𝑖𝑗𝑘𝑙𝑚𝑛𝑜𝑝𝑞𝑟𝑠𝑡𝑢𝑣𝑤𝑥𝑦𝑧𝐴𝐵𝐶𝐷𝐸𝐹𝐺𝐻𝐼𝐽𝐾𝐿𝑀𝑁𝑂𝑃𝑄𝑅𝑆𝑇𝑈𝑉𝑊𝑋𝑌𝑍0123456789" },
+            { name: "Italic Sans", map: "𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘲𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘓𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡0123456789" },
+            { name: "Script", map: "𝒶𝒷𝒸𝒹𝑒𝒻𝑔𝒽𝒾𝒿𝓀𝓁𝓂𝓃𝑜𝓅𝓆𝓇𝓈𝓉𝓊𝓋𝓌𝓍𝓎𝓏𝒜𝐵𝒞𝒟𝐸𝐹𝒢𝐻𝐼𝒥𝒦𝐿𝑀𝒩𝒪𝒫𝒬𝑅𝒮𝒯𝒰𝒱𝒲𝒳𝒴𝒵0123456789" },
+            { name: "Bold Script", map: "𝓪𝓫𝓬𝓭𝓮𝓯𝓰𝓱𝓲𝓳𝓴𝓵𝓶𝓷𝓸𝓹𝓺𝓻𝓼𝓽𝓾𝓿𝔀𝔁𝔂𝔃𝓐𝓑𝓒𝓓𝓔𝓕𝓖𝓗𝓘𝓙𝓚𝓛𝓜𝓝𝓞𝓟𝓠𝓡𝓢𝓣𝓤𝓥𝓦𝓧𝓨𝓩𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗" },
+            { name: "Fraktur", map: "𝔞𝔟𝔠𝔡𝔢𝔣𝔤𝔥𝔦𝔧𝔨𝔩𝔪𝔫𝔬𝔭𝔮𝔯𝔰𝔱𝔲𝔳𝔴𝔵𝔶𝔷𝔄𝔅ℭ𝔇𝔈𝔉𝔊ℌℑ𝔍𝔎𝔏𝔐𝔑𝔒𝔓𝔔ℜ𝔖𝔗𝔲𝔳𝔴𝔵𝔶ℨ0123456789" },
+            { name: "Bold Fraktur", map: "𝖆𝖇𝖈𝖉𝖊𝖋𝖌𝖍𝖎𝖏𝖐𝖑𝖒𝖓𝖔𝖕𝖖𝖗𝖘𝖙𝖚𝖛𝖜𝖝𝖞𝖟𝕬𝕭𝕮𝕯𝕰𝕱𝕲𝕳𝕴𝕵𝕶𝕷𝕸𝕹𝕺𝕻𝕼𝕽𝕾𝕿𝖀𝖁𝖂𝖃𝖄𝖅𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗" },
+            { name: "Double Struck", map: "𝕒𝕓𝕔𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡" },
+            { name: "Monospace", map: "𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉𝟶𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿" },
+            { name: "Circled", map: "ⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏ0①②③④⑤⑥⑦⑧⑨" },
+            { name: "Circled Dark", map: "🅐𝑩𝑪𝑫🅔𝑷𝑸𝑹𝑱𝑲𝑳𝑴𝑵𝑶𝑷𝑸𝑹𝑺𝑻𝑼𝑽𝑾𝑿𝒀𝒁🅐𝑩𝑪𝑫🅔𝑷𝑸𝑹𝑱𝑲𝑳𝑴𝑵𝑶𝑷𝑸𝑹𝑺𝑻𝑼𝑽𝑾𝑿𝒀𝒁⓿❶❷❸❹❺❻❼❽❾" },
+            { name: "Squared", map: "🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉🄰🄱🄲🄳🄴🄵🄶🄷🄸🄹🄺🄻🄼🄽🄾🄿🅀🅁🅂🅃🅄🅅🅆🅇🅈🅉0123456789" },
+            { name: "Squared Dark", map: "🅰🅱🅲🅳🅴🅵🅶🅷🅸🉉🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉🅰🅱🅲🅳🅴🅵🅶🅷🅸🉉🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉0123456789" },
+            { name: "Parenthesized", map: "⒜⒝⒞⒟⒠⒡⒢⒣⒤⒥⒦⒧⒨⒩⒪⒫⒬⒭⒮⒯⒰⒱⒲⒳⒴⒵ⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏ0⑴⑵⑶⑷⑸⑹⑺⑻⑼" },
+            { name: "Small Caps", map: "ᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢᴀʙᴄᴅᴇꜰɢʜɪᴊᴋʟᴍɴᴏᴘǫʀsᴛᴜᴠᴡxʏᴢ0123456789" },
+            { name: "Wide", map: "ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢＣ𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝗟𝗠𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭０１２３４５６７８９" },
+            { name: "Currency", map: "₳฿₵ĐɆ₣₲ⱧłJ₭Ⱡ₥₦Ø₱QⱤ₴₮ɄV₩Ӿ¥Ⱬ₳฿₵ĐɆ₣₲ⱧłJ₭Ⱡ₥₦Ø₱QⱤ₴₮ɄV₩Ӿ¥Ⱬ0123456789" },
+            { name: "Runic", map: "ᚣᛒᚳᛞᛖᚠᚷᚻᛁᛃᛕᛚᛗᚿᛜᛔᛩᚱᛋᛏᚢᚡᚹᛪᚤᛉᚣᛒᚳᛞᛖᚠᚷᚻᛁᛃᛕᛚᛗᚿᛜᛔᛩᚱᛋᛏᚢᚡᚹᛪᚤᛉ0123456789" },
+            { name: "Greek", map: "αвcdεfgнιjκlмиσρqяsтυνωxчzΑΒCDΕFGΗΙJΚLΜΝΟΡQRSΤυνWΧΥΖ0123456789" },
+            { name: "Russian", map: "аъсdеfɢнijкlмиорqяsтцvшxчzАБCDЄFGHЇJКLМИОPQЯSТЦVШХЧZ0123456789" },
+            { name: "UpsideDown", map: "inverted_logic" }
+        ];
+
+        // Emoji Spacers (For Combinatorics)
+        const emojiSpacers = [
+            "✨", "🔥", "💖", "💀", "🤡", "👽", "👻", "🤖", "🎃", "🦋", "🦄", "🌸", "🌹", "🌵", "🌴", 
+            "🍕", "🍔", "🍟", "🍺", "🚀", "🚁", "🚂", "🏎️", "🏖️", "🏔️", "🌋", "💎", "💍", "👑", 
+            "⚽", "🏀", "🏈", "🎮", "🎲", "🎯", "🎨", "🎭", "🎤", "🎧", "🎼", "🎹", "🥁", "🎻", 
+            "🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", 
+            "🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "⬛", "⬜", "🟫"
+        ];
+
+        // Diacritic Combinations (For Glitch/Cursed)
+        const decorators = [
+            { char: '\u0332', name: "Underline" },
+            { char: '\u0336', name: "Strikethrough" },
+            { char: '\u0334', name: "Tilde Overlay" },
+            { char: '\u0338', name: "Slash Overlay" },
+            { char: '\u20E3', name: "Block" },
+            { char: '\u0305', name: "Overline" },
+            { char: '\u0359', name: "Asterisk Below" },
+            { char: '\u034B', name: "Zigzag" }
+        ];
+
+        // Upside Down Logic
+        const upsideDownMap = { 'a': 'ɐ', 'b': 'q', 'c': 'ɔ', 'd': 'p', 'e': 'ǝ', 'f': 'ɟ', 'g': 'ƃ', 'h': 'ɥ', 'i': 'ᴉ', 'j': 'ɾ', 'k': 'ʞ', 'l': 'l', 'm': 'ɯ', 'n': 'u', 'o': 'o', 'p': 'd', 'q': 'b', 'r': 'ɹ', 's': 's', 't': 'ʇ', 'u': 'n', 'v': 'ʌ', 'w': 'ʍ', 'x': 'x', 'y': 'ʎ', 'z': 'z', 'A': '∀', 'B': '𐐒', 'C': 'Ɔ', 'D': '◖', 'E': 'Ǝ', 'F': 'Ⅎ', 'G': '⅁', 'H': 'H', 'I': 'I', 'J': 'ſ', 'K': '⋊', 'L': '⅂', 'M': 'W', 'N': 'N', 'O': 'O', 'P': 'Ԁ', 'Q': 'Ό', 'R': 'ᴚ', 'S': 'S', 'T': '⊥', 'U': '∩', 'V': 'Λ', 'W': 'M', 'X': 'X', 'Y': '⅄', 'Z': 'Z', '1': 'Ɩ', '2': 'ᄅ', '3': 'Ɛ', '4': 'h', '5': 'S', '6': '9', '7': 'L', '8': '8', '9': '6', '0': '0', '.': '˙', ',': "'", '?': '¿', '!': '¡', '"': '„', "'": ',', '(': ')', ')': '(', '[': ']', ']': '[', '{': '}', '}': '{', '<': '>', '>': '<', '_': '‾' };
+
+        // --- 2. STATE ---
+        let currentText = "";
+        let generatedList = [];
+        let displayLimit = 24;
+        let currentFilter = "all";
+        let asciiArt = null;
+
+        // --- 3. GENERATOR ENGINE ---
+        function generateEverything(input) {
+            if (!input) return [];
+            let list = [];
+
+            // Helper to apply map
+            const mapText = (txt, mapStr) => {
+                if (mapStr === "inverted_logic") {
+                    return txt.split('').reverse().map(c => upsideDownMap[c] || c).join('');
+                }
+                return txt.split('').map(char => {
+                    const idx = chars.indexOf(char);
+                    if (idx === -1) return char;
+                    const mapArr = Array.from(mapStr);
+                    return mapArr[idx] || char;
+                }).join('');
+            };
+
+            // A. CLEAN STYLES (Base Fonts)
+            baseFonts.forEach(font => {
+                list.push({ text: mapText(input, font.map), name: font.name, type: "clean" });
+            });
+
+            // B. AESTHETIC (Spaced + Decorators)
+            list.push({ text: input.split('').join(' '), name: "Spaced", type: "aesthetic" });
+            list.push({ text: input.split('').join('  '), name: "Wide Spaced", type: "aesthetic" });
+            
+            decorators.forEach(dec => {
+                list.push({ 
+                    text: input.split('').map(c => c + dec.char).join(''), 
+                    name: `Standard + ${dec.name}`, 
+                    type: "glitch" 
+                });
+            });
+
+            // C. EMOJI MIXERS (Combinatorics: 50 emojis * 5 styles = 250 styles)
+            // We mix specific base fonts with emoji spacers
+            const mixFonts = [baseFonts[0], baseFonts[1], baseFonts[5], baseFonts[9]]; // Normal, Bold, Script, Mono
+            
+            emojiSpacers.forEach(emoji => {
+                mixFonts.forEach(font => {
+                    const transformed = mapText(input, font.map);
+                    const mixed = transformed.split('').join(emoji);
+                    list.push({ 
+                        text: mixed, 
+                        name: `${font.name} + ${emoji}`, 
+                        type: "emoji" 
+                    });
+                });
+                // Wrapper Style: 🍒Text🍒
+                list.push({ text: `${emoji} ${input} ${emoji}`, name: `${emoji} Wrapper ${emoji}`, type: "emoji" });
+            });
+
+            // D. GLITCH/CRAZY (Base Font + Diacritic)
+            // Mix Bold Fraktur with Zalgo-ish marks
+            const weirdFonts = [baseFonts[7], baseFonts[19]]; // Fraktur, Greek
+            const weirdDecs = decorators.slice(0, 5);
+            weirdFonts.forEach(font => {
+                weirdDecs.forEach(dec => {
+                    const base = mapText(input, font.map);
+                    const res = base.split('').map(c => c + dec.char).join('');
+                    list.push({ text: res, name: `${font.name} + ${dec.name}`, type: "glitch" });
+                });
+            });
+
+            return list;
+        }
+
+        // --- 4. RENDERING ---
+        const outputGrid = document.getElementById('outputGrid');
+        
+        function render() {
+            const text = document.getElementById('textInput').value.trim() || "Type something...";
+            
+            // If text changed, regenerate list
+            if (text !== currentText) {
+                currentText = text;
+                generatedList = generateEverything(text);
+                
+                // Always put ASCII at top if exists
+                if (asciiArt) {
+                    generatedList.unshift({ text: asciiArt, name: "✨ AI ASCII Art", type: "ascii" });
+                }
+            }
+
+            // Filter
+            const filtered = generatedList.filter(item => {
+                if (currentFilter === 'all') return true;
+                if (currentFilter === 'emoji') return item.type === 'emoji';
+                if (currentFilter === 'clean') return item.type === 'clean';
+                if (currentFilter === 'glitch') return item.type === 'glitch';
+                if (currentFilter === 'aesthetic') return item.type === 'aesthetic';
+                return true;
+            });
+
+            // Slice for pagination
+            const visible = filtered.slice(0, displayLimit);
+
+            // DOM Update (Smart Diffing is hard in vanilla, so we rebuild grid)
+            outputGrid.innerHTML = '';
+            
+            visible.forEach(item => {
+                const el = document.createElement('div');
+                el.className = `glass-panel rounded-xl p-4 flex flex-col gap-2 hover:border-purple-500/50 transition-all group relative overflow-hidden cursor-pointer animate-fade-in`;
+                
+                const isAscii = item.type === 'ascii';
+                const contentHtml = isAscii 
+                    ? `<pre class="font-mono text-[10px] leading-[10px] text-green-400 whitespace-pre overflow-x-auto scrollbar-hide">${item.text}</pre>`
+                    : `<div class="font-medium text-lg text-gray-200 break-words leading-relaxed">${item.text}</div>`;
+
+                // Added Share Icon Button here
+                el.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] font-bold tracking-wider text-gray-500 uppercase truncate pr-2">${item.name}</span>
+                        <div class="flex items-center gap-3">
+                            <button onclick="event.stopPropagation(); shareAsImage('${item.text.replace(/'/g, "\\'")}')" class="text-gray-600 hover:text-blue-400 transition-colors" title="Share Image">
+                                <i class="fas fa-share-nodes"></i>
+                            </button>
+                            <button onclick="event.stopPropagation(); copyText('${item.text.replace(/'/g, "\\'")}')" class="text-gray-600 hover:text-purple-400 transition-colors" title="Copy Text">
+                                <i class="far fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    ${contentHtml}
+                    <div class="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                `;
+                // Click on body triggers copy
+                el.onclick = (e) => {
+                    if (!e.target.closest('button')) copyText(item.text);
+                };
+                outputGrid.appendChild(el);
+            });
+
+            // Load More Logic
+            const trigger = document.getElementById('loadMoreTrigger');
+            if (visible.length < filtered.length) {
+                trigger.style.display = 'flex';
+                const observer = new IntersectionObserver((entries) => {
+                    if(entries[0].isIntersecting) {
+                        displayLimit += 24;
+                        render(); // Re-render with higher limit
+                    }
+                });
+                observer.observe(trigger);
+            } else {
+                trigger.style.display = 'none';
+            }
+        }
+
+        // --- SHARE LOGIC (NEW) ---
+        async function shareAsImage(text) {
+            const captureArea = document.getElementById('share-capture-area');
+            const contentArea = document.getElementById('share-content');
+            
+            // Set content
+            contentArea.textContent = text;
+            
+            showToast("Generating image...", false);
+
+            try {
+                // Wait a tick for rendering
+                await new Promise(resolve => setTimeout(resolve, 100));
+
+                const canvas = await html2canvas(captureArea, {
+                    backgroundColor: '#0b0f19',
+                    scale: 2, // Retina quality
+                    logging: false,
+                    useCORS: true
+                });
+
+                canvas.toBlob(async (blob) => {
+                    if (!blob) {
+                        showToast("Failed to create image", true);
+                        return;
+                    }
+                    
+                    const file = new File([blob], 'fancy-text.png', { type: 'image/png' });
+
+                    // Try native sharing (Mobile)
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        try {
+                            await navigator.share({
+                                title: 'Fancy Text Universe',
+                                text: 'Check out this cool text! Generated at fancytext.app',
+                                files: [file]
+                            });
+                            showToast("Shared successfully!");
+                        } catch (err) {
+                            if (err.name !== 'AbortError') {
+                                console.error(err);
+                                downloadImage(canvas); // Fallback if share fails but wasn't cancelled
+                            }
+                        }
+                    } else {
+                        // Fallback for Desktop
+                        downloadImage(canvas);
+                    }
+                }, 'image/png');
+
+            } catch (err) {
+                console.error(err);
+                showToast("Error generating screenshot", true);
+            }
+        }
+
+        function downloadImage(canvas) {
+            const link = document.createElement('a');
+            link.download = 'fancy-text-universe.png';
+            link.href = canvas.toDataURL();
+            link.click();
+            showToast("Image downloaded! (Sharing unavailable on desktop)");
+        }
+
+
+        // --- 5. AI INTEGRATION ---
+        async function triggerAI(mode) {
+            const input = document.getElementById('textInput');
+            const text = input.value.trim();
+            
+            if (!text) { showToast("Please type text first!", true); return; }
+            
+            document.getElementById('aiLoader').classList.remove('hidden');
+
+            const prompts = {
+                emojify: `Rewrite this text by adding relevant emojis between words. Keep meaning same. Text: "${text}"`,
+                grammar: `Fix grammar, spelling, and punctuation. Return ONLY the fixed text. Text: "${text}"`,
+                hashtags: `Generate 10 viral hashtags for this text. Return ONLY the tags. Text: "${text}"`,
+                slang: `Translate this into Gen Z internet slang (no cap, fr, etc). Return ONLY text. Text: "${text}"`,
+                professional: `Rewrite this to sound professional/corporate (LinkedIn style). Return ONLY text. Text: "${text}"`,
+                uwu: `Rewrite this in "UwU" cute anime style. Return ONLY text. Text: "${text}"`,
+                sarcastic: `Rewrite this to be mocking/sarcastic. Return ONLY text. Text: "${text}"`,
+                roast: `Roast the person saying this text. Be savage. Return ONLY text. Text: "${text}"`,
+                poetic: `Rewrite this as a short rhyming poem. Return ONLY text. Text: "${text}"`,
+                old_english: `Rewrite in medieval Shakespearean style. Return ONLY text. Text: "${text}"`,
+                pirate: `Rewrite in Pirate speak. Return ONLY text. Text: "${text}"`,
+                alien: `Rewrite in cryptic sci-fi alien style (Zorg speak). Return ONLY text. Text: "${text}"`,
+                tldr: `Summarize this into a very short TL;DR. Return ONLY text. Text: "${text}"`,
+                ascii: `Generate a small ASCII art block (max 30 chars wide) representing: "${text}". Return ONLY the ASCII.`,
+                html: `Convert this text into valid HTML code using appropriate tags (h1, p, span, etc) and HTML entities where needed. Return ONLY the HTML code. Text: "${text}"`
+            };
+
+            try {
+                const result = await callGemini(prompts[mode]);
+                
+                if (mode === 'ascii') {
+                    asciiArt = result;
+                    showToast("ASCII Generated!");
+                } else if (mode === 'hashtags') {
+                    input.value = text + "\n\n" + result;
+                    showToast("Tags added!");
+                } else {
+                    input.value = result;
+                    showToast("Transformed!");
+                }
+                
+                // Force update
+                displayLimit = 24;
+                render();
+
+            } catch (e) {
+                showToast("AI Error. Try again.", true);
+                console.error(e);
+            } finally {
+                document.getElementById('aiLoader').classList.add('hidden');
+            }
+        }
+
+        async function callGemini(prompt) {
+            const resp = await fetch(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`,
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                }
+            );
+            const data = await resp.json();
+            return data.candidates[0].content.parts[0].text.trim();
+        }
+
+        // --- 6. UTILS ---
+        function copyText(txt) {
+            navigator.clipboard.writeText(txt).then(() => showToast("Copied to clipboard!"));
+        }
+
+        function showToast(msg, err = false) {
+            const t = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            t.classList.remove('opacity-0', 'translate-y-10', 'pointer-events-none');
+            t.classList.toggle('border-red-500/50', err);
+            t.classList.toggle('text-red-400', err);
+            setTimeout(() => t.classList.add('opacity-0', 'translate-y-10', 'pointer-events-none'), 2000);
+        }
+
+        function filterStyles(type) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.toggle('bg-purple-600', b.dataset.filter === type);
+                b.classList.toggle('text-white', b.dataset.filter === type);
+                b.classList.toggle('bg-gray-800', b.dataset.filter !== type);
+            });
+            displayLimit = 24;
+            render();
+        }
+        
+        function clearText() {
+            document.getElementById('textInput').value = '';
+            asciiArt = null;
+            currentText = '';
+            render();
+        }
+
+        // Init
+        document.getElementById('textInput').addEventListener('input', (e) => {
+            document.getElementById('charCount').innerText = e.target.value.length;
+            // Debounce slightly for performance
+            clearTimeout(window.renderTimeout);
+            window.renderTimeout = setTimeout(render, 50);
+        });
+        
+        // Set initial active tab
+        filterStyles('all');
+        render();
+
+    </script>
+</body>
+</html>
